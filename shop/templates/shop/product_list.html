@@ -1,0 +1,45 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}product list{% endblock %}
+
+{% block content %}
+
+    {% if category %}
+        <h1>لیست محصولات {{ category.name }}</h1>
+    {% else %}
+        <h1>لیست محصولات</h1>
+    {% endif %}
+    <br><br><br>
+    <div class="category">
+        <h2>دسته بندی ها</h2>
+        <ul>
+            <a href="{% url 'shop:index' %}"><li>All</li></a>
+            {% for category in categories %}
+
+                <a href="{% url 'shop:index_by_slug' category.slug %}"><li>{{ category.name }}</li></a>
+
+            {% endfor %}
+        </ul>
+
+    </div>
+
+
+    <div class="product-box">
+            
+        {% for product in products %}
+            <a href="{% url 'shop:product_detail' product.slug product.id %}">
+               <img style="height: 400px;width: auto;" src="{{ product.images.first.image.url }}">
+                <br>
+                {{ product.name }}
+                <br>
+                {% if product.offer %}
+                    <div style="color: red;">{{ product.price }}</div>
+                {% endif %}
+                {{ product.new_price }}
+            </a>
+        {% endfor %}
+        
+    </div>
+
+{% endblock %}
+

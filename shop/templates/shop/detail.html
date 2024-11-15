@@ -1,0 +1,19 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}product detail{% endblock %}
+
+{% block content %}
+    {{ product.name }}
+    <br>
+    <img  style="height: 400px;width: auto;" src="{{ product.images.first.image.url }}">
+    <h2>:ویژگی ها</h2>
+    <ul>
+        {% for feature in product.features.all %}
+            <li>{{ feature }}</li>
+        {% endfor %}
+    </ul>
+    <h3>توضیحات:</h3>
+    {{ product.description }}
+    <h5>موجودی:{{ product.inventory }}</h5>
+
+{% endblock %}
