@@ -131,3 +131,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # abstractbaseuser
 AUTH_USER_MODEL = 'account.ShopUser'
+
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or 'cached_db', etc.
