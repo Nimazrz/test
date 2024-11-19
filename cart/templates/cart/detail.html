@@ -4,6 +4,8 @@
 
 {% block content %}
 
-
+{% for item in cart %}
+        {{ item.product.id }}
+    {% endfor %}
 
 {% endblock %}
