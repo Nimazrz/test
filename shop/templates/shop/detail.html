@@ -1,6 +1,6 @@
 {% extends 'parent/base.html' %}
 {% load static %}
-{% block title %}product detail{% endblock %}
+{% block title %}product datail{% endblock %}
 
 {% block content %}
     {{ product.name }}
@@ -16,7 +16,7 @@
     {{ product.description }}
     <h5>موجودی:{{ product.inventory }}</h5>
     <br>
-
+    <div>{{ product.new_price }} :قیمت</div>
     <br>
     <button type="button" class="add-cart" id="add-cart">
         <h4>افزودن به سبد خرید</h4>

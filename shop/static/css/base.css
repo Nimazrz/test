@@ -2,3 +2,11 @@
     height: auto;
     width: 10px;
 }
+.price{
+    color: red;
+}
+
+.img{
+    height: 400px;
+    width: auto;
+}

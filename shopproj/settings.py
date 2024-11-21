@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'account.apps.AccountConfig',
     "cart.apps.CartConfig",
     "orders.apps.OrdersConfig",
+    "api.apps.ApiConfig",
+    "rest_framework",
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -67,6 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cart.context_processors.cart',
             ],
         },
     },
@@ -134,3 +138,4 @@ AUTH_USER_MODEL = 'account.ShopUser'
 
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or 'cached_db', etc.
+CART_SESSION_ID = 'cart'

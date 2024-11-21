@@ -3,9 +3,79 @@
 {% block title %}cart datail{% endblock %}
 
 {% block content %}
+<h2>سبد خرید</h2>
+<div class="order">
 
-{% for item in cart %}
-        {{ item.product.id }}
+    {% for item in cart %}
+        <div class="product" style="border-style: solid; padding: 5px;">
+            <div class="product-info">
+                <img style="height: 400px;width: auto;" src="{{ item.product.images.first.image.url }}" alt="image">
+                {{ item.product.name }}
+            </div>
+            <div class="functions" style="border-style: solid; padding: 5px ">
+                <div class="quantity-add" >+</div>
+                <div class="quantity-decrease">ـ</div>
+                <div class="quantity-remove">حذف</div>
+            </div>
+            <div class="pricec">
+                {{ item.product.new_price }}: قیمت محصول
+                <div id="item-quantity-{{ item.product.id }}">{{ item.quantity }}: تعداد</div>
+                <div id="item-total-{{ item.product.id }}">{{ item.total }}:قیمت کل</div>
+
+            </div>
+        </div>
     {% endfor %}
+    <div class="final-prices">
+       <div id="item-total_price"> {{ cart.get_total_price }} :قیمت کل محصولات</div>
+        <div>{{ cart.get_post_price }} :هزینه ارسال</div>
+        <div id="item-final_price">{{ cart.get_final_price }} :هزینه قابل پرداخت</div>
+    </div>
+    <h5>ادامه</h5>
+   <a href="{% url 'shop:index' %}"><h5>بازگشت به لیست محصولات</h5></a>
+</div>
 
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $(document).ready(function(){
+            $('.quantity-add').on('click', function(){
+                updateQuantity($(this).closest('.product-item').data('item-id'), 'add');
+            });
+            $('.quantity-decrease').on('click', function (){
+                updateQuantity($(this).closest('.product-item').data('item-id'),'decrease');
+            });
+
+        // Event for removing an item
+        //     $('.quantity-remove').on('click', function(){
+        //     let productId = $(this).closest('.product-item').data('product-id'); // Fix data key
+        //     removeItem(productId);
+        // });
+
+        // Function to update item quantity
+        function updateQuantity(itemId, action){
+            $.ajax({
+                type: "POST",
+                url: '{% url "cart:update_quantity" %}', // Ensure correct URL name in Django
+                data: {
+                    'itemId': itemId, // Fix variable case
+                    'action': action,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                    success: function(response){
+                        if (response.success){
+                            $('#item_count').text(response.item_count);
+                            $('#total_price').text(response.total_price);
+                            $('#item-quantity-' + itemId).text(response.quantity);
+                            $('#item-total-' + itemId).text(response.total);
+                            $('#item-total_price').text(response.total_price);
+                            $('#item-final_price').text(response.final_price);
+                        }else {
+                            alert('Error updating quantity!');
+                        }
+                    }
+            });
+        }
+
+        });
+    </script>
 {% endblock %}
