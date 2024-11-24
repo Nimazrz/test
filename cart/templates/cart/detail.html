@@ -7,7 +7,7 @@
 <div class="order">
 
     {% for item in cart %}
-        <div class="product" style="border-style: solid; padding: 5px;">
+        <div class="product-item" data-item-id="{{ item.product.id }}" style="border-style: solid; padding: 5px;">
             <div class="product-info">
                 <img style="height: 400px;width: auto;" src="{{ item.product.images.first.image.url }}" alt="image">
                 {{ item.product.name }}
@@ -19,18 +19,18 @@
             </div>
             <div class="pricec">
                 {{ item.product.new_price }}: قیمت محصول
-                <div id="item-quantity-{{ item.product.id }}">{{ item.quantity }}: تعداد</div>
-                <div id="item-total-{{ item.product.id }}">{{ item.total }}:قیمت کل</div>
+                <p><span id="item-quantity-{{ item.product.id }}">{{ item.quantity }}</span>: تعداد</p>
+               <p><span id="item-total-{{ item.product.id }}">{{ item.total }}</span>:قیمت کل</p>
 
             </div>
         </div>
     {% endfor %}
     <div class="final-prices">
-       <div id="item-total_price"> {{ cart.get_total_price }} :قیمت کل محصولات</div>
+       <p><span id="item-total_price"> {{ cart.get_total_price }}</span> :قیمت کل محصولات</p>
         <div>{{ cart.get_post_price }} :هزینه ارسال</div>
-        <div id="item-final_price">{{ cart.get_final_price }} :هزینه قابل پرداخت</div>
+        <p><span id="item-final_price">{{ cart.get_final_price }}</span> :هزینه قابل پرداخت</p>
     </div>
-    <h5>ادامه</h5>
+    <h5><a href="{% url 'orders:phone_verification' %}">ادامه</a> </h5>
    <a href="{% url 'shop:index' %}"><h5>بازگشت به لیست محصولات</h5></a>
 </div>
 
@@ -44,12 +44,10 @@
             $('.quantity-decrease').on('click', function (){
                 updateQuantity($(this).closest('.product-item').data('item-id'),'decrease');
             });
-
-        // Event for removing an item
-        //     $('.quantity-remove').on('click', function(){
-        //     let productId = $(this).closest('.product-item').data('product-id'); // Fix data key
-        //     removeItem(productId);
-        // });
+            $('.quantity-remove').on('click', function(){
+            let productId = $(this).closest('.product-item').data('item-id');
+            removeItem(productId);
+        });
 
         // Function to update item quantity
         function updateQuantity(itemId, action){
@@ -75,6 +73,27 @@
                     }
             });
         }
+          function removeItem(itemId){
+                $.ajax({
+                    type:"POST",
+                    url : "{% url 'cart:remove_item' %}",
+                    data:{
+                        'itemId' : itemId,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function(response){
+                        if (response.success){
+                            $('#item_count').text(response.item_count);
+                            $('#total_price').text(response.total_price);
+                            $('#item-total_price').text(response.total_price);
+                            $('#item-final_price').text(response.final_price);
+                            $('.product-item[data-item-id="' + itemId + '"]').remove();
+                        }else {
+                            alert('Error updating quantity!');
+                        }
+                    }
+                });
+            }
 
         });
     </script>

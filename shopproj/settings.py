@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "orders.apps.OrdersConfig",
     "api.apps.ApiConfig",
     "rest_framework",
-    'rest_framework.authtoken',
+    # 'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,14 @@ AUTH_USER_MODEL = 'account.ShopUser'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # or 'cached_db', etc.
 CART_SESSION_ID = 'cart'
+
+# درگاه پرداخت
+
+MERCHANT = "00000000-0000-0000-0000-000000000000"
+SANDBOX = True
+
+# settings.py
+
+ZP_API_REQUEST = 'https://api.zarinpal.com/pg/v4/payment/request.json'
+ZP_API_STARTPAY = 'https://www.zarinpal.com/pg/StartPay/'
+CALLBACK_URL = 'http://127.0.0.1:8000/order/verify/'  # Ensure this is the correct callback URL

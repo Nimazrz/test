@@ -1,0 +1,16 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}verify code{% endblock %}
+
+{% block content %}
+
+<h5>کد تایید را وارد کنید</h5>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="verification_code" placeholder="کد تایید ۶ رقمی">
+    <input type="submit" value="ثبت">
+</form>
+{% for message in messages %}
+    {{ message }}
+{% endfor %}
+{% endblock %}

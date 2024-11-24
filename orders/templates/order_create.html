@@ -1,0 +1,17 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}verify order{% endblock %}
+
+{% block content %}
+
+{% for item in cart %}
+{{ item.producct }}
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="ثبت اطلاعات">
+</form>
+
+{% endblock %}

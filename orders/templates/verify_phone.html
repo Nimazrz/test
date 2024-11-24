@@ -1,0 +1,18 @@
+{% extends 'parent/base.html' %}
+{% load static %}
+{% block title %}verify phone{% endblock %}
+
+{% block content %}
+
+    <h4>تلفن خود را وارد کنید</h4>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ارسال کد">
+    </form>
+{% for message in messages %}
+    {{ message }}
+{% endfor %}
+
+{% endblock %}

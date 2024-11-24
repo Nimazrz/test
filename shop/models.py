@@ -24,7 +24,7 @@ class Product(models.Model):
     description = models.TextField()
     price = models.PositiveIntegerField()
     offer = models.DecimalField(max_digits=10, decimal_places=2)
-    new_price = models.PositiveIntegerField()
+    new_price = models.PositiveIntegerField(blank=True)
     weight = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

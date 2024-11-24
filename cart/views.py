@@ -42,10 +42,24 @@ def update_quantity(request):
             'total_price': cart.get_total_price(),
             'quantity': cart.cart[item_id]['quantity'],
             # 'price': cart.cart[item_id]['price'],
-            'tototal': cart.cart[item_id]['quantity'] * cart.cart[item_id]['price'],
+            'total': cart.cart[item_id]['quantity'] * cart.cart[item_id]['price'],
             'final_price': cart.get_final_price(),
             'success': True,
         }
         return JsonResponse(context)
     except:
         return JsonResponse({'success': False, 'error': 'Item not found! '})
+
+
+def remove_item(request):
+    product_id = request.GET.get('itemId')
+    product = get_object_or_404(Product, id=product_id)
+    cart = Cart(request)
+    cart.remove(product)
+    context = {
+        'item_count': len(cart),
+        'total_price': cart.get_total_price(),
+        'final_price': cart.get_final_price(),
+        'success': True,
+    }
+    return JsonResponse(context)
