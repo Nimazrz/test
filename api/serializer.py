@@ -1,17 +1,29 @@
 from rest_framework import serializers
-# from rest_framework.authtoken.admin import User
-from django.contrib.auth import get_user_model
+from account.models import ShopUser
 from shop.models import Product
+from orders.models import Order, OrderItem
 
-User = get_user_model()
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields =['id', 'name', 'new_price', 'category', 'description', 'weight', 'inventory']
+        fields = ['id', 'name', 'new_price', 'category', 'description', 'weight', 'inventory']
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
-        fields = ['id', 'username', 'email' ]
+        model = ShopUser
+        fields = ['id', 'first_name', 'last_name', 'phone', 'email']
 
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderItem
+        fields = '__all__'
+
+class OrderSerializer(serializers.ModelSerializer):
+    items = OrderItemSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
